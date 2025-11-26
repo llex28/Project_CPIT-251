@@ -1,0 +1,18 @@
+Report for Sara (Date: 75756)
+Behaviour: 7757
+Health Status: jghgh
+Activities: jghg
+Additional Notes: hjhg
+---------------------------------------------------------------------------------
+
+Teacher
+First Name: Noha, Last Name: Mohammed, ID:1155889966, Gender: Girl, Birth Date: 7/11/1997, Email: Noha@gmail.com, Phone: 0555442255, Role: Teacher, Status: Active, Password: TeacherNoha
+---------------------------------------------------------------------------------
+Assistant
+First Name: Sophia, Last Name: Naif, ID:1122639966, Gender: Girl, Birth Date: 19/7/1993, Email: Sophia@gmail.com, Phone: 0555159255, Role: assistant, Status: Active, Password: AssistantSophia
+---------------------------------------------------------------------------------
+child
+First Name: Sara, Last Name: Khalid, ID:1111198999, Gender: Girl, Birth Date: 19/8/2023, Email: Mom@gmail.com, Phone: 0555665335, Allergy Information: nothing, Chronic Diseases: nothing, General Notes: nothing, Password: ChildSara
+---------------------------------------------------------------------------------
+This the footer
+thanks!
