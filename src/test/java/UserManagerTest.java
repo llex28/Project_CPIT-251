@@ -20,7 +20,7 @@ public class UserManagerTest {
     
     @Before
     public void setUp() throws Exception {
-        // Copy test-users.txt to a temp input file and ensure the file exists
+        // Copy test users.txt to a temp input file and ensure the file exists
         URL resource = getClass().getClassLoader().getResource("test-users.txt");
         assertNotNull("test-users.txt not found in src/test/resources", resource);
 
@@ -45,13 +45,13 @@ public class UserManagerTest {
         // Verify the Child user (ID 1001) details
         User child = manager.findUserById(1001);
         assertNotNull("Child should exist", child);
-        assertEquals("Child", child.getUserType());
-        assertEquals("TestChild", child.getFirstName());
+        assertTrue(child.getUserType().equalsIgnoreCase("Child"));
+        assertEquals("Amer", child.getFirstName());
         assertEquals("nuts", child.getAllergyInfo());
         // Verify the Teacher user (ID 2001) details
         User teacher = manager.findUserById(2001);
         assertNotNull("Teacher should exist", teacher);
-        assertEquals("Teacher", teacher.getUserType());
+        assertTrue(teacher.getUserType().equalsIgnoreCase("teacher"));
         assertEquals("Teacher", teacher.getRole());
         assertEquals("Active", teacher.getStatus());
     }
@@ -61,9 +61,9 @@ public class UserManagerTest {
         // Create new staff user
         User newStaff = new User(
                 3001, "Assistant",
-                "Sara", "Helper",
+                "Sara", "Ahmad",
                 "Girl", "3/3/1995",
-                "sara@test.com", "0550000000", "SARA123",
+                "sara@gmail.com", "0550000000", "SARA123",
                 "assistant", "Active"
         );
         // Assert creation was successful and count increased
@@ -89,7 +89,7 @@ public class UserManagerTest {
         User child2 = manager2.findUserById(1001);
         assertNotNull(child2);
         assertEquals("NEWPASS", child2.getPassword());
-        // Verify new Staff 3001 exists and has correct type/role
+        // Verify new Staff 3001 exists and has correct type and role
         User staff2 = manager2.findUserById(3001);
         assertNotNull(staff2);
         assertEquals("Assistant", staff2.getUserType());
@@ -101,9 +101,9 @@ public class UserManagerTest {
         // Attempt to create a new user with ID 1001, which already exists
         User duplicateChild = new User(
                 1001, "Child",
-                "Other", "Name",
+                "Majed", "Ahmad",
                 "Boy", "1/1/2020",
-                "other@test.com", "0501111111", "XX",
+                "Majed@gmail.com", "0501111111", "MajedXX",
                 "none", "none", "none"
         );
 
@@ -118,6 +118,5 @@ public class UserManagerTest {
         assertFalse("Updating non-existing user should return false", updated);
     }
     
-    
-    
+  
 }

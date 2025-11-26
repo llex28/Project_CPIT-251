@@ -159,7 +159,7 @@ public class User {
     //return string representation of the user object including all fields
     @Override
     public String toString() {
-        return "User{" + "ID=" + id + ", Type='" + userType + '\'' +", Name='" + firstName + " " + lastName + '\''+", Gender='" + gender + '\'' +", BirthDate='" + birthDate + '\'' +
+        return "User{" + "ID=" + String.format("%03d", id) + ", Type='" + userType + '\'' +", Name='" + firstName + " " + lastName + '\''+", Gender='" + gender + '\'' +", BirthDate='" + birthDate + '\'' +
                 ", Email='" + email + '\'' +", Phone='" + phone + '\'' +
                 ", AllergyInfo='" + allergyInfo + '\'' +", Chronic Diseases='" + chronicDiseases + '\'' +", Notes='" + generalNotes + '\'' +", Role='" + role + '\'' +", Status='" + status + '\'' + '}';
     }

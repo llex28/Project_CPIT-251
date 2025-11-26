@@ -14,13 +14,6 @@ public class UserManager {
     //ArryList to handel all user objects
     private final ArrayList<User> users = new ArrayList<>();
     
-    // ArrayList to handel lines before the first user block (intro text)
-    private final ArrayList<String> headerLines = new ArrayList<>();
-    // ArrayList to handel lines after the last user block (summary text)
-    private final ArrayList<String> footerLines = new ArrayList<>();
-    
-    
-
     // helper methode to get value after label until next comma 
     private static String get(String line, String label) {
         int start = line.indexOf(label);// Find the start index of the label
@@ -32,12 +25,11 @@ public class UserManager {
     }
     
     
-       // Read all users from file keeps header and footer
+       // Read all users from file 
     public void loadFromFile(String filePath) throws IOException {
         //clear existing data before loading new data
         users.clear();
-        headerLines.clear();
-        footerLines.clear();
+        
         //Check if the exists or not
         File f = new File(filePath);
         if (!f.exists()) {
@@ -46,164 +38,92 @@ public class UserManager {
         }
 
         // read all lines into temporary list
-        ArrayList<String> lines = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(f))) {
+       try (BufferedReader br = new BufferedReader(new FileReader(f))) {
             String line;
+
             while ((line = br.readLine()) != null) {
-                lines.add(line);
-            }
-        }
+                line = line.trim();
+                if (line.isEmpty()) continue;       // skip empty lines
+                if (line.startsWith("-")) continue; // skip separator lines
 
-        boolean foundFirstUser = false;// Flag to track if we have started parsing user blocks
-        boolean inFooter = false;// Flag to track if we have reached the footer section
-        int i = 0;// Current line index
+                String lower = line.toLowerCase();
 
-        while (i < lines.size()) {
-            String line = lines.get(i);
-            String trimmed = line.trim();
-            String lower = trimmed.toLowerCase();
-            // Check if the current line is a known user type, indicating the start of a user block
-            boolean isType = lower.equals("child")
-                    || lower.equals("teacher")
-                    || lower.equals("assistant")
-                    || lower.equals("admin");
-
-            if (!foundFirstUser) {
-                // still in header part
-                if (!isType) {
-                    headerLines.add(line);
-                    i++;
-                    continue;
-                } else {
-                    // first user starts type we found
-                    foundFirstUser = true;
-                    // Parse the entire user block and update 'i' to the next line after the user's data
-                    i = parseUserBlock(lines, i, trimmed, lower); // consumes type+data
-                    continue;
+                // we only accept these as user type headers
+                if (!lower.equals("child") && !lower.equals("teacher") && !lower.equals("assistant") && !lower.equals("admin")) {
+                    continue;// unexpected line ignore and continue
                 }
-            }
 
-            // After first user has been found
-            if (inFooter) {
-                // already in footer section: keep adding all subsequent lines to the footer
-                footerLines.add(line);
-                i++;
-                continue;
-            }
+                String typeOriginal = line; // type of the user child,Teacher ....
 
-            if (isType) {
-                // Found another user block,parse it
-                i = parseUserBlock(lines, i, trimmed, lower);
-                continue;
-            }
+                // read next non empty data line
+                String data;
+                while ((data = br.readLine()) != null && data.trim().isEmpty()) {
+                    // skip blank lines between type and data
+                }
+                if (data == null) break; // end of file
+                data = data.trim();
 
-            // not a type line
-            if (trimmed.isEmpty() || trimmed.startsWith("-")) {
-                // blank line or separator line between users
-                i++;
-                continue;
-            }
+                // parse common fields 
+                String idStr = get(data, "ID:");
+                if (idStr == null) continue;
+                int id = Integer.parseInt(idStr);
 
-            // any other non empty, non type line after user blocks means we in the footer
-            inFooter = true;
-            footerLines.add(line);
-            i++;
+                String firstName = get(data, "First Name:");
+                String lastName = get(data, "Last Name:");
+                String gender = get(data, "Gender:");
+                String birthDate = get(data, "Birth Date:");
+                String email = get(data, "Email:");
+                String phone = get(data, "Phone:");
+                String password = get(data, "Password:");
+
+                // child only
+                String allergy = get(data, "Allergy Information:");
+                String chronic = get(data, "Chronic Diseases:");
+                String notes = get(data, "General Notes:");
+
+                // staff only
+                String role = get(data, "Role:");
+                String status = get(data, "Status:");
+
+                User user;
+                if (lower.equals("child")) {
+                    // Child constructor 
+                    user = new User(
+                            id, typeOriginal,
+                            firstName, lastName,
+                            gender, birthDate,
+                            email, phone, password,
+                            allergy, chronic, notes
+                    );
+                } else {
+                    // Staff constructor 
+                    user = new User(
+                            id, typeOriginal,
+                            firstName, lastName,
+                            gender, birthDate,
+                            email, phone, password,
+                            role, status
+                    );
+                }
+
+                users.add(user);
+            }
         }
     }
     
-    
-        
-     //Parses one complete user block type line + data line starting at the given index.
-     
-    private int parseUserBlock(List<String> lines, int index, String typeOriginal, String typeLower) {
-        int i = index + 1;
-
-        // skip blank lines between type and data
-        while (i < lines.size() && lines.get(i).trim().isEmpty()) {
-            i++;
-        }
-        if (i >= lines.size()) return i;// Reached end of the file
-
-        String data = lines.get(i).trim();
-
-        // parse common fields 
-        String idStr= get(data, "ID:");
-        if (idStr == null) return i + 1;  //ID field is missing or broken
-        int id= Integer.parseInt(idStr);// Convert ID string to integer
-
-        String firstName  = get(data, "First Name:");
-        String lastName   = get(data, "Last Name:");
-        String gender     = get(data, "Gender:");
-        String birthDate  = get(data, "Birth Date:");
-        String email      = get(data, "Email:");
-        String phone      = get(data, "Phone:");
-        String password   = get(data, "Password:");
-
-        // child-only
-        String allergy    = get(data, "Allergy Information:");
-        String chronic    = get(data, "Chronic Diseases:");
-        String notes      = get(data, "General Notes:");
-
-        // staff-only
-        String role       = get(data, "Role:");
-        String status     = get(data, "Status:");
-
-        User user;
-        if (typeLower.equals("child")) {
-            // use child constructor
-            user = new User(
-                    id, typeOriginal,
-                    firstName, lastName,
-                    gender, birthDate,
-                    email, phone, password,
-                    allergy, chronic, notes
-            );
-        } else {
-            // Teacher / Assistant / Admin -> staff constructor
-            user = new User(
-                    id, typeOriginal,
-                    firstName, lastName,
-                    gender, birthDate,
-                    email, phone, password,
-                    role, status
-            );
-        }
-
-        users.add(user);
-        return i + 1; // next line after data
-    }
-
-
-    
-    
-    // Write header,users and footer to the outputfile
+    // Write users to the outputfile
     public void saveToFile(String filePath) throws IOException {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
-
-            // write header exactly as it was
-            for (String h : headerLines) {
-                bw.write(h);
-                bw.newLine();
-            }
-
-            // if header does not end with a blank line, add one
-            if (!headerLines.isEmpty()) {
-                String last = headerLines.get(headerLines.size() - 1).trim();
-                if (!last.isEmpty()) {
-                    bw.newLine();
-                }
-            }
-
             //write all users with separator lines
             for (User u : users) {
-                // first lineuser type
+                // first line user type
                 bw.write(u.getUserType());
                 bw.newLine();
-                // The comma-separated data lineappend all common fields
+                // append all fields on one line
                 StringBuilder line = new StringBuilder();
                 line.append("First Name: ").append(u.getFirstName()).append(", ");
                 line.append("Last Name: ").append(u.getLastName()).append(", ");
-                line.append("ID:").append(u.getId()).append(", ");
+                line.append("ID:").append(String.format("%03d", u.getId())).append(", ");
                 line.append("Gender: ").append(u.getGender()).append(", ");
                 line.append("Birth Date: ").append(u.getBirthDate()).append(", ");
                 line.append("Email: ").append(u.getEmail()).append(", ");
@@ -227,11 +147,6 @@ public class UserManager {
                 bw.newLine();
             }
 
-            //Write footer lines exactly as it was
-            for (String fLine : footerLines) {
-                bw.write(fLine);
-                bw.newLine();
-            }
         }
     }
 

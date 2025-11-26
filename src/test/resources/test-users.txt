@@ -1,0 +1,6 @@
+child
+First Name: Amer, Last Name: One, ID:1001, Gender: Boy, Birth Date: 1/1/2020, Email: c1@test.com, Phone: 0500000000, Allergy Information: nuts, Chronic Diseases: none, General Notes: ok, Password: C1
+---------------------------------------------------------------------------------
+Teacher
+First Name: Test, Last Name: Teacher, ID:2001, Gender: Girl, Birth Date: 2/2/1990, Email: t1@test.com, Phone: 0511111111, Role: Teacher, Status: Active, Password: T1
+---------------------------------------------------------------------------------

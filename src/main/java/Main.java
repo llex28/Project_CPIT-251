@@ -30,6 +30,8 @@ public class Main {
         // Initialize Scanner object to read from user
         Scanner in = new Scanner(System.in);
         //Loop to display the menu option
+        int ID;
+        String FN,LN, gender,BD,email,phone,allergy, chronic, notes,pw,role,status; 
         while (true) {
             System.out.println("\n--- MENU ---");
             System.out.println("1) List all users");
@@ -70,35 +72,29 @@ public class Main {
                 case 2: 
                     //Take all input informations from the user
                     System.out.print("ID (int): ");
-                    int cid = Integer.parseInt(in.nextLine());
+                    ID = Integer.parseInt(in.nextLine());
                     System.out.print("First name: ");
-                    String cfn = in.nextLine();
+                    FN = in.nextLine();
                     System.out.print("Last name: ");
-                    String cln = in.nextLine();
+                    LN = in.nextLine();
                     System.out.print("Gender: ");
-                    String cgender = in.nextLine();
+                    gender = in.nextLine();
                     System.out.print("Birth date: ");
-                    String cbd = in.nextLine();
+                    BD = in.nextLine();
                     System.out.print("Email: ");
-                    String cemail = in.nextLine();
+                    email = in.nextLine();
                     System.out.print("Phone: ");
-                    String cphone = in.nextLine();
+                    phone = in.nextLine();
                     System.out.print("Password: ");
-                    String cpw = in.nextLine();
+                    pw = in.nextLine();
                     System.out.print("Allergy info: ");
-                    String callergy = in.nextLine();
+                    allergy = in.nextLine();
                     System.out.print("Chronic diseases: ");
-                    String cchronic = in.nextLine();
+                    chronic = in.nextLine();
                     System.out.print("General notes: ");
-                    String cnotes = in.nextLine();
+                    notes = in.nextLine();
                     //Create new object
-                    User child = new User(
-                            cid, "Child",
-                            cfn, cln,
-                            cgender, cbd,
-                            cemail, cphone, cpw,
-                            callergy, cchronic, cnotes
-                    );
+                    User child = new User(ID, "Child",FN, LN,gender, BD,email, phone, pw,allergy,chronic, notes);
                     //attempt to add the new user, if the user already exists will not added
                     if (manager.createUser(child)) {
                         System.out.println("Child created.");
@@ -111,35 +107,29 @@ public class Main {
                 case 3: 
                     //Take all input informations from the user
                     System.out.print("ID (int): ");
-                    int sid = Integer.parseInt(in.nextLine());
+                    ID = Integer.parseInt(in.nextLine());
                     System.out.print("Staff type (Teacher/Assistant/Admin): ");
-                    String stype = in.nextLine();
+                    String type = in.nextLine();
                     System.out.print("First name: ");
-                    String sfn = in.nextLine();
+                    FN = in.nextLine();
                     System.out.print("Last name: ");
-                    String sln = in.nextLine();
+                    LN = in.nextLine();
                     System.out.print("Gender: ");
-                    String sgender = in.nextLine();
+                    gender = in.nextLine();
                     System.out.print("Birth date: ");
-                    String sbd = in.nextLine();
+                    BD  = in.nextLine();
                     System.out.print("Email: ");
-                    String semail = in.nextLine();
+                    email = in.nextLine();
                     System.out.print("Phone: ");
-                    String sphone = in.nextLine();
+                    phone = in.nextLine();
                     System.out.print("Password: ");
-                    String spw = in.nextLine();
+                    pw = in.nextLine();
                     System.out.print("Role: ");
-                    String srole = in.nextLine();
+                    role = in.nextLine();
                     System.out.print("Status: ");
-                    String sstatus = in.nextLine();
+                    status = in.nextLine();
                     //Create new object
-                    User staff = new User(
-                            sid, stype,
-                            sfn, sln,
-                            sgender, sbd,
-                            semail, sphone, spw,
-                            srole, sstatus
-                    );
+                    User staff = new User(ID, type,FN, LN, gender, BD,email, phone, pw,role, status);
                     //attempt to add the new user, if the user already exists will not added
                     if (manager.createUser(staff)) {
                         System.out.println("Staff created.");
