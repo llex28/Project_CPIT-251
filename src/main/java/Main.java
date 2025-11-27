@@ -33,6 +33,7 @@ public class Main {
         int ID;
         String FN,LN, gender,BD,email,phone,allergy, chronic, notes,pw,role,status; 
         while (true) {
+            System.out.println("\n--- Welcome to Daycare Health-Tracker System ---");
             System.out.println("\n--- MENU ---");
             System.out.println("1) List all users");
             System.out.println("2) Create new CHILD");
@@ -186,6 +187,46 @@ public class Main {
                 ChildReport.writeReport();
 
         
+    
+        // -----------------Communicate with Parent/Teacher-----------------
+        // Reham's code
+
+        Database database = new Database();
+        MessagingSystem system = new MessagingSystem(database);
+
+        while (true) {
+            System.out.println("\n--- Daycare Messaging System ---");
+            System.out.print("Hello, Enter your name (or 'exit' to quit): ");
+            String userName = in.nextLine();
+            if (userName.equalsIgnoreCase("exit")) break;
+
+            System.out.println(userName + "! What do you want to do?");
+            System.out.println("1. Send a message");
+            System.out.println("2. Display messages");
+            System.out.println("3. Logout");
+
+            int choice = Integer.parseInt(in.nextLine());
+
+            if (choice == 1) {
+            System.out.print("Enter recipient name: ");
+            String recipient = in.nextLine();
+            System.out.print("Enter your message: ");
+            String content = in.nextLine();
+
+            system.sendMessage(content, userName, recipient);
+            System.out.println("Message sent successfully!");} 
+
+            else if (choice == 2) {
+                System.out.println("Messages for " + userName + ":");
+                system.displayMessages(userName);
+            } 
+
+            else if (choice == 3) {
+                System.out.println("Logging out...");
+                continue;
+            }
+        }
+
         in.close();
     }
     
